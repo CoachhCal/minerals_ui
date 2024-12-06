@@ -16,9 +16,16 @@ export default function Cart() {
   useEffect(() => {
     
     if (cookies.cart) {
-      const cartArray = cookies.cart.split(','); 
+      let cartArray = cookies.cart;
       
-      setCartItems(cartArray); 
+      // Ensure it's a string and split it into an array
+      if (typeof cartArray !== "string") {
+        cartArray = cartArray.toString(); // Convert to string if it's not
+      }
+
+      // Split by commas to get the product IDs
+      const itemsArray = cartArray.split(',').filter(Boolean); // Filter removes empty strings
+      setCartItems(itemsArray); 
     }
   }, [cookies]);
 
@@ -57,8 +64,6 @@ export default function Cart() {
                   }
               }
 
-
-
               products = data.filter((data)=>  // filter through all mineral to only get the ones in the cart
                 {
                   for(let i = 0; i < indexedArray.length; i++){ //indexed array contains only product id's in cart
@@ -73,8 +78,6 @@ export default function Cart() {
               for(let i=0; i<products.length;i++){ //find subtotal
                 subTotal += products[i].cost * tempQuantityArray[i]
               }
-
-            
              
               setSubTotal(subTotal)
               setMinerals(products);
@@ -93,9 +96,6 @@ export default function Cart() {
     }
   }, [cartItems, cookies]);
 
-
-
-
   return (
     <>
     
@@ -106,7 +106,7 @@ export default function Cart() {
             
             <div className="col-3 car m-3" key={index}>
               {/* <div className="card m-3"> */}
-                <ProductCard mineral={mineral} apiHost={apiHost} quantity = {quantityArray[index]}/>
+                <ProductCard mineral={mineral} apiHost={apiHost} quantity = {quantityArray[index]} setCartItems={setCartItems}/>
               {/* </div> */}
             </div>
           ))}
@@ -121,8 +121,11 @@ export default function Cart() {
       <div>
         <div className = "d-flex justify-content-center align-items-center mt-5 border border-dark p-3 rounded shadow-lg mx-auto" style={{ width: '50vw' }}>
         
-        
-        <h3>Sub-Total: ${Math.round(subTotal*100)/100}</h3>
+        <div>
+        <h3>Sub-Total: ${(parseFloat(subTotal) || 0).toFixed(2)}</h3>
+        <h3>Tax: ${(parseFloat(subTotal * 0.15) || 0).toFixed(2)}</h3>
+        <h3>Total: ${(parseFloat(subTotal * 1.15) || 0).toFixed(2)}</h3>
+        </div>
 
         <Link to="/checkout" className="btn btn-lg btn-secondary ms-5" style={{ width: '20vw'}}>Complete Purchase</Link>
         </div>

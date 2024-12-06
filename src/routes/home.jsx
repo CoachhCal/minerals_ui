@@ -54,7 +54,7 @@ export default function Home(){
         </div>
       ) : 
       (
-        <p>No Contacts</p>
+        <p>No Minerals</p>
       )
     }
 

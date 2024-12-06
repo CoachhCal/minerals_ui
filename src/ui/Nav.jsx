@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import '../index.css'
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
-export default function Navbar() {
+export default function Navbar(props) {
   return (
     <>
       <nav className="navbar navbar fixed-top navbar-expand-lg navbar-light bg-light">
@@ -12,17 +13,20 @@ export default function Navbar() {
             <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
                 <ul className="navbar-nav">
                 <li className="nav-item active">
-                    <a className="nav-link navLinkText" href="/">Home</a>
+                    <Link to="/" className="nav-link navLinkText" >Home</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link navLinkText" href="/cart">Cart</a>
+                    <Link to="/cart" className="nav-link navLinkText" ><i className="bi bi-cart"></i></Link>
                 </li>
+                {!props.logged ?(
                 <li className="nav-item">
-                    <a className="nav-link navLinkText" href="/login">Login</a>
-                </li>
+                    <Link to = "/login" className="nav-link navLinkText">Login</Link>
+                </li>)
+                :(
                 <li className="nav-item">
-                    <a className="nav-link navLinkText" href="logout">Logout</a>
+                    <Link to = "/logout" className="nav-link navLinkText">Logout</Link>
                 </li>
+                )}
                 </ul>
             </div>
         </nav>
